@@ -1,0 +1,23 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+.coverage
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+.idea/
+.vscode/
+*.log
+
+data/images/
+models/
+metrics/
+split/
+requests/*.json
+streamlit.log
+Thumbs.db
+.DS_Store
+
+# Local generated artifacts are intentionally ignored.
