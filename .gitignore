@@ -3,6 +3,8 @@ __pycache__/
 .pytest_cache/
 .venv/
 venv/
+.env
+.env.*
 .coverage
 .mypy_cache/
 .ruff_cache/
@@ -10,8 +12,12 @@ venv/
 .idea/
 .vscode/
 *.log
+*.pem
+*.key
+*.pfx
+local.settings.json
 
-data/images/
+reference/
 models/
 metrics/
 split/
@@ -20,4 +26,5 @@ streamlit.log
 Thumbs.db
 .DS_Store
 
-# Local generated artifacts are intentionally ignored.
+# Ignore local-only artifacts and secrets.
+# The synthetic training dataset under data/images/ is intentionally committed.

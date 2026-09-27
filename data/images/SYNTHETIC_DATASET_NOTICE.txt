@@ -1,0 +1,5 @@
+SYNTHETIC DATASET NOTICE
+
+All images in this directory were programmatically generated for classroom use.
+They do not represent real plant inspection images or validated production distributions.
+Use this dataset only for local development, testing, and demonstration of the image-track capstone.

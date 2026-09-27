@@ -1,6 +1,8 @@
 # Smelter Super Kings Image-Track Capstone
 
-This repository contains the local image-track capstone for the Smelter Super Kings team.
+This repository contains the **public team capstone** for the Smelter Super Kings image track.
+
+It is designed so teammates can clone the same codebase, use the same **SYNTHETIC** image dataset, and then deploy independently into their own Azure ML environment.
 
 The project classifies aluminium inspection images into five classes:
 
@@ -18,10 +20,26 @@ The project classifies aluminium inspection images into five classes:
 - Priority metrics: `stain recall`, `stain F1`
 - Data used in class: `SYNTHETIC`
 - Track: `Image (Surface Defect)`
+- Deployment model: each teammate deploys separately using their own Azure resources
 
 ## Important Note
 
-Everything in `data/images/`, along with the local model artifacts trained from it, is **SYNTHETIC classroom data**. Nothing in this repo should be described as plant-validated production performance.
+Everything in `data/images/`, along with the model artifacts that can be trained from it, is **SYNTHETIC classroom data**.
+
+- The dataset is intentionally included in this repository so teammates can reuse the same training and demo inputs.
+- Nothing in this repo should be described as plant-validated production performance.
+- The current tuned main model is **capstone-ready for local demo and team deployment practice**, but it is **not production-ready**.
+- The current selected main model performed better overall on the synthetic holdout set, but stain performance is still limited enough that further improvement would be needed before any real operational use.
+
+## Current Model Status
+
+Current synthetic-holdout summary from the saved evaluation artifacts:
+
+- Selected model: `main`
+- Main model macro F1: about `0.719`
+- Main model stain recall: `0.50`
+- Main model stain F1: about `0.615`
+- Interpretation: acceptable for the classroom capstone story, not strong enough for production deployment or plant decision-making
 
 ## Repo Layout
 
@@ -29,7 +47,7 @@ Everything in `data/images/`, along with the local model artifacts trained from 
 - `src/`: data prep, baseline, training, evaluation, inference, and scoring
 - `app/`: local Streamlit review app
 - `tests/`: local readiness and validation tests
-- `data/images/`: synthetic image data
+- `data/images/`: committed synthetic image dataset for team training and demo use
 - `models/`: trained local model artifacts
 - `metrics/`: evaluation outputs
 - `split/`: generated train/test metadata splits
@@ -52,6 +70,10 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 ```
 
 ## Generate the SYNTHETIC Dataset
+
+The repository already includes the **SYNTHETIC** image dataset under `data/images/` so teammates can train and deploy consistently.
+
+You only need these commands if you want to regenerate the dataset locally:
 
 ```powershell
 python src/make_synthetic_images.py --out data/images --per_class 40 --seed 42
@@ -92,6 +114,24 @@ Key outputs:
 - `metrics/main_metrics.json`
 - `metrics/comparison.json`
 - `models/selected_model.json`
+
+## Deployment Prep For Teammates
+
+Expected team workflow for Azure ML deployment:
+
+1. Clone this repository.
+2. Create or verify your own Azure ML workspace, compute, and supporting Azure resource group.
+3. Upload the committed `data/images/` dataset from this repo as your Azure ML data asset.
+4. Run the training and evaluation flow using your own Azure ML setup or local-first workflow.
+5. Register the selected model artifact in your own Azure ML workspace.
+6. Deploy your own online endpoint using your own subscription resources.
+7. Point the app to your own endpoint credentials locally after deployment.
+
+Important:
+
+- Each teammate should use their **own Azure resource group / Azure ML workspace / endpoint deployment**.
+- Do not share endpoint credentials in the repository.
+- Do not commit secrets, keys, `.env` files, or endpoint authentication details.
 
 ## Run Local Inference
 
@@ -150,4 +190,7 @@ The tests currently check:
 ## Notes
 
 - Keep all demo and training data clearly marked `SYNTHETIC`.
+- `data/images/` is intentionally committed because teammates need the same synthetic dataset for training and demo use.
+- Do not commit internal workshop material from `reference/`.
+- Do not commit secrets, keys, `.env` files, endpoint credentials, or local Azure deployment secrets.
 - Do not modify `azureml/` or `azure-pipelines.yml` during this local capstone phase if they appear later.
